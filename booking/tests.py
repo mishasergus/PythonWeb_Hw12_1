@@ -70,3 +70,18 @@ class BookingViewTests(TestCase):
         response = self.client.get(reverse("booking:add_measure"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "booking/measure_form.html")
+
+    def test_django_staff_can_open_measure_creation_form(self):
+        django_staff_user = CustomUser.objects.create_user(
+            username="django-staff",
+            password=None,
+            is_staff=True,
+        )
+        self.client.force_login(django_staff_user)
+        response = self.client.get(reverse("booking:add_measure"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_regular_user_cannot_open_measure_creation_form(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("booking:add_measure"))
+        self.assertEqual(response.status_code, 403)

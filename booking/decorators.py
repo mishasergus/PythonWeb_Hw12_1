@@ -7,7 +7,12 @@ def staff_required(view_func):
     @wraps(view_func)
     @login_required
     def wrapper(request, *args, **kwargs):
-        if not getattr(request.user, 'role', None) or not request.user.role.staff:
+        role = getattr(request.user, "role", None)
+        if not (
+            request.user.is_staff
+            or request.user.is_superuser
+            or getattr(role, "staff", False)
+        ):
             raise PermissionDenied("You can`t go here")
         return view_func(request, *args, **kwargs)
     return wrapper
