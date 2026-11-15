@@ -1,0 +1,35 @@
+{% extends "booking/base.html" %}
+{% block title %}{{ measure.name }}{% endblock %}
+{% block content %}
+<div class="detail-layout">
+    <div class="detail-image">
+        {% if measure.img_url %}<img src="{{ measure.img_url }}" alt="{{ measure.name }}">{% else %}<span class="image-placeholder">M.</span>{% endif %}
+    </div>
+    <section class="detail-copy">
+        <p class="eyebrow">Measure · {{ measure.start_time|date:"D, M j" }}</p>
+        <h1>{{ measure.name }}</h1>
+        <p class="detail-byline">Hosted by {{ measure.creator.username }}</p>
+        <p class="detail-description">{{ measure.description|default:"Details for this measure will be shared soon."|linebreaksbr }}</p>
+        <div class="detail-facts">
+            <div><span>Starts</span><strong>{{ measure.start_time|date:"F j, Y · H:i" }}</strong></div>
+            <div><span>Ends</span><strong>{{ measure.end_time|date:"F j, Y · H:i" }}</strong></div>
+            <div><span>Price</span><strong>${{ measure.price }}</strong></div>
+        </div>
+        <div class="action-row">
+            {% if user.is_authenticated %}
+                {% if user == measure.creator %}
+                    <span class="muted">You created this measure.</span>
+                {% else %}
+                    <a class="button" href="{% url 'booking:book_measure' measure.id %}">Reserve a place</a>
+                {% endif %}
+            {% else %}
+                <a class="button" href="{% url 'accounts:login' %}?next={% url 'booking:book_measure' measure.id %}">Log in to book</a>
+            {% endif %}
+            {% if user.is_staff or user.is_superuser or user.role.staff %}
+                <a class="button button-secondary" href="{% url 'booking:update_measure' measure.id %}">Edit</a>
+                <a class="text-link danger-link" href="{% url 'booking:delete_measure' measure.id %}">Delete</a>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "booking/base.html" %}
+{% block title %}Delete {{ measure.name }}{% endblock %}
+{% block content %}
+<section class="narrow-panel">
+    <p class="eyebrow">Please confirm</p>
+    <h1>Delete this measure?</h1>
+    <p>“{{ measure.name }}” will be permanently removed along with its bookings.</p>
+    <form method="post" class="button-row">
+        {% csrf_token %}
+        <button class="button button-danger" type="submit">Delete measure</button>
+        <a class="button button-secondary" href="{% url 'booking:measure_detail' measure.id %}">Cancel</a>
+    </form>
+</section>
+{% endblock %}

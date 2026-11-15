@@ -1,0 +1,15 @@
+{% extends "booking/base.html" %}
+{% block title %}Reserve {{ measure.name }}{% endblock %}
+{% block content %}
+<section class="narrow-panel">
+    <p class="eyebrow">Confirm your place</p>
+    <h1>Book {{ measure.name }}</h1>
+    <p class="muted">{{ measure.start_time|date:"F j, Y · H:i" }} · ${{ measure.price }}</p>
+    <p>You are booking this measure as <strong>{{ user.username }}</strong>.</p>
+    <form method="post" class="button-row">
+        {% csrf_token %}
+        <button class="button" type="submit">Confirm booking</button>
+        <a class="button button-secondary" href="{% url 'booking:measure_detail' measure.id %}">Go back</a>
+    </form>
+</section>
+{% endblock %}

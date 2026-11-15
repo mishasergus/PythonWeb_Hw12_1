@@ -1,0 +1,16 @@
+{% extends "booking/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<section class="narrow-panel form-panel">
+    <p class="eyebrow">Host an experience</p>
+    <h1>{{ title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="button-row">
+            <button class="button" type="submit">{{ submit_label }}</button>
+            <a class="button button-secondary" href="{% if measure %}{% url 'booking:measure_detail' measure.id %}{% else %}{% url 'booking:measure_list' %}{% endif %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

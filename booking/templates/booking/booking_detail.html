@@ -1,0 +1,15 @@
+{% extends "booking/base.html" %}
+{% block title %}Booking details{% endblock %}
+{% block content %}
+<section class="narrow-panel">
+    <p class="eyebrow">Booking #{{ booking.id }}</p>
+    <h1>{{ booking.measure.name }}</h1>
+    <p class="detail-byline">Booked by {{ booking.creator.username }} · <span class="status status-{{ booking.status }}">{{ booking.get_status_display }}</span></p>
+    <div class="detail-facts">
+        <div><span>Starts</span><strong>{{ booking.measure.start_time|date:"F j, Y · H:i" }}</strong></div>
+        <div><span>Ends</span><strong>{{ booking.measure.end_time|date:"F j, Y · H:i" }}</strong></div>
+        <div><span>Price</span><strong>${{ booking.measure.price }}</strong></div>
+    </div>
+    <div class="button-row"><a class="button" href="{% url 'booking:measure_detail' booking.measure.id %}">View measure</a><a class="button button-secondary" href="{% url 'booking:book_history' %}">Back to bookings</a></div>
+</section>
+{% endblock %}

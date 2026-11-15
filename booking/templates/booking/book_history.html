@@ -1,0 +1,21 @@
+{% extends "booking/base.html" %}
+{% block title %}My bookings{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Your plans</p>
+    <h1>My bookings</h1>
+    <p>Everything you have reserved, all in one place.</p>
+</section>
+<div class="booking-list">
+    {% for booking in bookings %}
+        <a class="booking-row" href="{% url 'booking:booking_detail' booking.id %}">
+            <div class="booking-date"><strong>{{ booking.measure.start_time|date:"d" }}</strong><span>{{ booking.measure.start_time|date:"M" }}</span></div>
+            <div class="booking-info"><h2>{{ booking.measure.name }}</h2><p>{{ booking.measure.start_time|date:"D, M j · H:i" }} · Hosted by {{ booking.measure.creator.username }}</p></div>
+            <span class="status status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+            <span class="row-arrow" aria-hidden="true">→</span>
+        </a>
+    {% empty %}
+        <div class="empty-state"><h2>No bookings yet</h2><p>Find an upcoming measure and reserve your first place.</p><a class="button" href="{% url 'booking:measure_list' %}">Explore measures</a></div>
+    {% endfor %}
+</div>
+{% endblock %}
